@@ -82,10 +82,18 @@ function getGirlFriends($arr){
 
 	$frends = getFrends($arr); // убираем из массива все лишнее кроме 'friends'
 
-	$filteredUsers = array_filter($frends, function ($frend) { //фильтруем $frends по критерию 'female'
+	$filteredFrends = array_filter($frends, function ($frend) { //фильтруем $frends по критерию 'female'
     	return $frend['gender'] == 'female';
 	});
-	return $filteredUsers;
+	return arrZero($filteredFrends);
+}
+
+function arrZero($arr){
+	$result = [];
+	foreach ($arr as $val){
+		$result[] = $val;
+	}
+	return $result;
 }
 
 $girlfrends = getGirlFriends($usersGirls);
