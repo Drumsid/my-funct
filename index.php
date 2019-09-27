@@ -98,6 +98,67 @@ function arrZero($arr){
 
 $girlfrends = getGirlFriends($usersGirls);
 
-echo "<pre>";// раскоментить посмотреть результат функции getGirlFriends()
-print_r($girlfrends);
-echo "</pre>";
+// echo "<pre>";// раскоментить посмотреть результат функции getGirlFriends()
+// print_r($girlfrends);
+// echo "</pre>";
+
+
+//==========================================================
+//работа функции reduce
+
+$usersBirthday = [
+    ['name' => 'Bronn', 'gender' => 'male', 'birthday' => '1973-03-23'],
+    ['name' => 'Reigar', 'gender' => 'male', 'birthday' => '1973-11-03'],
+    ['name' => 'Eiegon',  'gender' => 'male', 'birthday' => '1963-11-03'],
+    ['name' => 'Sansa', 'gender' => 'female', 'birthday' => '2012-11-03'],
+    ['name' => 'Jon', 'gender' => 'male', 'birthday' => '1980-11-03'],
+    ['name' => 'Robb','gender' => 'male', 'birthday' => '1980-05-14'],
+    ['name' => 'Tisha', 'gender' => 'female', 'birthday' => '2012-11-03'],
+    ['name' => 'Rick', 'gender' => 'male', 'birthday' => '2012-11-03'],
+    ['name' => 'Joffrey', 'gender' => 'male', 'birthday' => '1999-11-03'],
+    ['name' => 'Edd', 'gender' => 'male', 'birthday' => '1973-11-03']
+];
+
+$filterusers = array_filter($users, function($user){
+	
+	return $user['gender'] == 'male';
+});
+// echo "<pre>";// раскоментить посмотреть результат функции array_filter()
+// print_r($filterusers);
+// echo "</pre>";
+
+$sortBirthday = array_reduce($filterusers, function($acc, $user){
+	$year = date('Y', strtotime($user['birthday']));
+	if (!array_key_exists($year, $acc)) {
+		$acc[$year] = 1;
+	} else {
+		$acc[$year] += 1;
+	}
+	return $acc;
+}, []);
+
+// echo "<pre>";// раскоментить посмотреть результат функции array_reduce()
+// print_r($sortBirthday);
+// echo "</pre>";
+
+function getMenCountByYear($arr){
+//фильтруем $usersBirthday чтоб остались только 'male'
+	$filterusers = array_filter($arr, function($user){ 
+		
+		return $user['gender'] == 'male';
+	});	
+// считаем кол-во одинаковых др в отфильрованом $usersBirthday
+	$sortBirthday = array_reduce($filterusers, function($acc, $user){ 
+		$year = date('Y', strtotime($user['birthday']));
+		if (!array_key_exists($year, $acc)) {
+			$acc[$year] = 1;
+		} else {
+			$acc[$year] += 1;
+		}
+		return $acc;
+	}, []);
+
+	return $sortBirthday;
+}
+
+print_r(getMenCountByYear($usersBirthday));
