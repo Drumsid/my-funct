@@ -42,6 +42,6 @@ function getManWithLeastFriends(array $arr){
 
 
 
-var_dump(getManWithLeastFriends($users));
+// var_dump(getManWithLeastFriends($users));
 
 // var_dump(empty([]));

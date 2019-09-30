@@ -161,4 +161,4 @@ function getMenCountByYear($arr){
 	return $sortBirthday;
 }
 
-print_r(getMenCountByYear($usersBirthday));
+// print_r(getMenCountByYear($usersBirthday));
