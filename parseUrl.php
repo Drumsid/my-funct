@@ -36,6 +36,8 @@
 // Формирование строки запроса - http_build_query()
 // Собирать данные в url придется самостоятельно
 
+// ==== my solution =================================================
+
 function make($url)
 {
 	return $url;
@@ -112,6 +114,9 @@ function setQueryParam($data, $key, $value)
 
 	parse_str($arrUrlData['query'], $strQuery); // создаем массив гет запроса из строки $arrUrlData['query'] 
 
+	// if (!array_key_exists($key, $strQuery) && $strQuery[$key] == null) {
+	// 	return $data;
+	// }
 	if (array_key_exists($key, $strQuery) && $strQuery[$key] == null){// проверяем есть ли ключ аргумента $key в созданном массиве запроса и равен ли он null
 		unset($strQuery[$key]); // удаляем если null
 		$tmp = http_build_query($strQuery); // опять делаем из массива строку в виде гет запроса 
@@ -125,7 +130,11 @@ function setQueryParam($data, $key, $value)
 	else if (empty($arrUrlData['query'])) { //если строка пока без гет запроса добавим первый запрос.
 		$arrUrlData['query'] = $result;
 		
-	} else {                                  // если запрос есть, добавим новый в конец строки
+	} 
+	else if (!empty($arrUrlData['query']) && $value == null) { // проверка на null
+		$arrUrlData['query'] .= $result;
+	} 
+	else {                                  // если запрос есть, добавим новый в конец строки
 		$arrUrlData['query'] .= "&" . $result;
 	}
 	
@@ -143,6 +152,7 @@ function getQueryParam($data, $paramName, $default = null){
 	}
 
 }
+// ==== my solution =================================================
 
 //=========================================
 $scheme = 'http';
@@ -155,44 +165,52 @@ $queryArr = [
 
 $url1 = make('https://hexlet.io/community?q=low');
 
-print_r(parse_url($url1));
-echo "<br>";
+// print_r(parse_url($url1));
+// echo "<br>";
+
+print_r($url1);
+echo "<br><br>";
 
 $changeScheme = setScheme($url1, $scheme);
 print_r($changeScheme);
-echo "<br>";
+echo "<br><br>";
 
-$getScheme = getScheme($changeScheme);
-print_r($getScheme);
-echo "<br>";
+// $getScheme = getScheme($changeScheme);
+// print_r($getScheme);
+// echo "<br>";
 
-$setHost = setHost($url1, $host);
-print_r($setHost);
-echo "<br>";
+// $setHost = setHost($url1, $host);
+// print_r($setHost);
+// echo "<br><br>";
 
-$getHost = getHost($setHost);
-print_r($getHost);
-echo "<br>";
+// $getHost = getHost($setHost);
+// print_r($getHost);
+// echo "<br><br>";
 
-$setPath = setPath($url1, $path);
+$setPath = setPath($changeScheme, $path);
 print_r($setPath);
-echo "<br>";
+echo "<br><br>";
 
-$getPath = getPath($setPath);
-print_r($getPath);
-echo "<br>";
+// $getPath = getPath($setPath);
+// print_r($getPath);
+// echo "<br><br>";
 
 // print_r(http_build_query($queryArr));
 $key = 'page';
 $value = 6;
 
-$setQueryParam = setQueryParam($url1, 'page', 5); // закончил тут
+$setQueryParam = setQueryParam($setPath, 'page', 5); // закончил тут
 print_r($setQueryParam);
-echo "<br>";
+echo "<br><br>";
 
-$getQueryParam = getQueryParam($setQueryParam, 'q'); 
-var_dump($getQueryParam);
-echo "<br>";
+$setQueryParam2 = setQueryParam($setQueryParam, 'q', 'high'); // закончил тут
+print_r($setQueryParam2);
+echo "<br><br>";
 
-// parse_str($setQueryParam, $query);
-// print_r($query);
+$setQueryParam3 = setQueryParam($setQueryParam2, 'q', null); // закончил тут
+print_r($setQueryParam3);
+echo "<br><br>";
+
+$setQueryParam4 = setQueryParam($setQueryParam3, 'q', null); // закончил тут
+print_r($setQueryParam4);
+echo "<br><br>";
